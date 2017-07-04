@@ -1,0 +1,26 @@
+<resources>
+  <string name="app_name">PlaidFork</string>
+  <string name="lorem">BlablaBlablaBlablaBlab laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla
+   laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla
+   laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla
+   laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla
+   laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla
+   laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla
+   laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla
+   laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla
+   laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla laBlablaBlablaBlablaBlabla</string>
+  <plurals name="like_number">
+    <item quantity="one">%s LIKE</item>
+    <item quantity="other">%s LIKES</item>
+  </plurals>
+
+  <plurals name="view_number">
+    <item quantity="one">%s VIEW</item>
+    <item quantity="other">%s VIEWS</item>
+  </plurals>
+
+  <plurals name="comment_number">
+    <item quantity="one">%s RESPONSE</item>
+    <item quantity="other">%s RESPONSES</item>
+  </plurals>
+</resources>
