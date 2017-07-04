@@ -9,9 +9,9 @@ import android.view.View
 import android.widget.Toast
 import com.example.ominext.plaidfork.R
 import com.example.ominext.plaidfork.base.BaseFragment
-import com.example.ominext.plaidfork.base.activity
 import com.example.ominext.plaidfork.data.LOADING_TYPE
 import com.example.ominext.plaidfork.data.model.Shot
+import com.example.ominext.plaidfork.extension.parentActivity
 import com.example.ominext.plaidfork.widget.EndlessScrollListener
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -28,8 +28,7 @@ class HomeFragment : BaseFragment(), HomeView, SwipeRefreshLayout.OnRefreshListe
     lateinit var adapter: ShotAdapter
 
     override fun injecting() {
-        activity().activityComponent.inject(this)
-        presenter.addView(this)
+        parentActivity.activityComponent.inject(this)
     }
 
     override fun initChildView() {
@@ -39,7 +38,7 @@ class HomeFragment : BaseFragment(), HomeView, SwipeRefreshLayout.OnRefreshListe
         list = ArrayList()
 
         adapter = ShotAdapter(list, fun(position: Int) {
-            presenter.onClickShot(context, list, position)
+            presenter.onClickShot(parentActivity, list, position)
         })
 
         val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
@@ -118,5 +117,15 @@ class HomeFragment : BaseFragment(), HomeView, SwipeRefreshLayout.OnRefreshListe
                 adapter.notifyItemInserted(list.size - 1)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.addView(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.detachView()
     }
 }

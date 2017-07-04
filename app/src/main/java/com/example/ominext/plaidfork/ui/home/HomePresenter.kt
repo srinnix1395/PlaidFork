@@ -1,12 +1,13 @@
 package com.example.ominext.plaidfork.ui.home
 
-import android.content.Context
+import android.os.Bundle
 import android.util.Log
+import com.example.ominext.plaidfork.base.BaseActivity
 import com.example.ominext.plaidfork.base.BasePresenter
 import com.example.ominext.plaidfork.data.DataManager
 import com.example.ominext.plaidfork.data.SharedPreManager
-import com.example.ominext.plaidfork.data.model.Shot
-import com.example.ominext.plaidfork.ui.detail.DetailActivity
+import com.example.ominext.plaidfork.extension.addFragment
+import com.example.ominext.plaidfork.ui.detail.DetailFragment
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
@@ -38,17 +39,18 @@ class HomePresenter @Inject constructor(dataManager: DataManager, disposable: Co
                     increasePage()
                 }, { t ->
                     view?.loadFail(page)
-                    Log.e("he", t?.message ?: "null")
+                    Log.e("he", t.message ?: "null")
                 }))
 
 
     }
 
-    fun onClickShot(context: Context, list: ArrayList<Any>, position: Int) {
+    fun onClickShot(activity: BaseActivity, list: ArrayList<Any>, position: Int) {
         val shot = list[position]
-        if (view != null) {
-            DetailActivity.navigate(context, shot as Shot)
-        }
+        val bundle = Bundle()
+//        bundle.putParcelable(DetailFragment.SHOT_DATA, shot)
+
+        activity.addFragment(DetailFragment())
     }
 
     fun getShots() {

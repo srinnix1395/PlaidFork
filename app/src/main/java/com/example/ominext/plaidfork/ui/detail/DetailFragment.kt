@@ -1,66 +1,60 @@
 package com.example.ominext.plaidfork.ui.detail
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.LinearLayoutManager
-import android.view.MenuItem
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.animation.GlideAnimation
 import com.example.ominext.plaidfork.R
-import com.example.ominext.plaidfork.base.BaseActivity
+import com.example.ominext.plaidfork.base.BaseFragment
 import com.example.ominext.plaidfork.data.model.Comment
 import com.example.ominext.plaidfork.data.model.Shot
 import com.example.ominext.plaidfork.extension.load
 import com.example.ominext.plaidfork.extension.loadAnimated
+import com.example.ominext.plaidfork.extension.parentActivity
 import com.example.ominext.plaidfork.extension.setTextWithFormatNumber
 import com.example.ominext.plaidfork.util.DateUtils
 import com.example.ominext.plaidfork.util.LinkUtils
 import com.example.ominext.plaidfork.widget.EndlessScrollListener
-import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.fragment_detail.*
 import javax.inject.Inject
 
-class DetailActivity : BaseActivity(), DetailView {
+class DetailFragment : BaseFragment(), DetailView {
 
     companion object {
-        val SHOT_DATA = "shot_data"
-
-        fun navigate(context: Context, shot: Shot) {
-            val intent = Intent(context, DetailActivity::class.java)
-            val data = Bundle()
-            data.putParcelable(SHOT_DATA, shot)
-            intent.putExtras(data)
-            context.startActivity(intent)
-        }
+        const val SHOT_DATA = "shot_data"
     }
 
 
     @Inject
     lateinit var detailPresenter: DetailPresenter
 
-    private var loadListener: EndlessScrollListener? = null
-
     private var shot: Shot? = null
 
     private var commentAdapter: CommentAdapter? = null
 
-    override fun getContext(): Context = this
+    override fun getContext(): Context = parentActivity
 
-    override fun getLayoutId(): Int = R.layout.activity_detail
+    override fun getLayoutId(): Int = R.layout.fragment_detail
 
     override fun injecting() {
-        activityComponent.inject(this)
+        parentActivity.activityComponent.inject(this)
+    }
+
+    override fun getData(arguments: Bundle) {
+        super.getData(arguments)
+        shot = arguments.getParcelable(SHOT_DATA)
     }
 
     override fun initChildView() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
+        toolbarDetail.setNavigationIcon(R.drawable.ic_back)
+        toolbarDetail.setNavigationOnClickListener {
+            onBackPressed()
         }
 
         collapsingToolbarLayout?.apply {
@@ -74,8 +68,8 @@ class DetailActivity : BaseActivity(), DetailView {
 
         rvComments.apply {
             commentAdapter = CommentAdapter(arrayListOf())
-            layoutManager = LinearLayoutManager(this@DetailActivity)
-            loadListener = object : EndlessScrollListener(layoutManager) {
+            layoutManager = LinearLayoutManager(parentActivity)
+            val loadListener = object : EndlessScrollListener(layoutManager) {
                 override fun onLoadMore() {
                     detailPresenter.loadComments(shot?.id!!)
                 }
@@ -84,7 +78,6 @@ class DetailActivity : BaseActivity(), DetailView {
             adapter = commentAdapter
         }
 
-        shot = intent.extras.getParcelable(SHOT_DATA)
         showShot()
     }
 
@@ -130,13 +123,6 @@ class DetailActivity : BaseActivity(), DetailView {
         LinkUtils.setTextWithLinks(tvDescription, shot?.description!!)
 
         detailPresenter.loadComments(shot?.id!!, isFirst = true)
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == android.R.id.home)
-            onBackPressed()
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {

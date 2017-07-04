@@ -1,4 +1,4 @@
-    package com.example.ominext.plaidfork.base
+package com.example.ominext.plaidfork.base
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -12,6 +12,7 @@ import com.example.ominext.plaidfork.di.module.ActivityModule
  */
 abstract class BaseActivity : AppCompatActivity(), BaseView {
     lateinit var activityComponent: ActivityComponent
+    var currentFragment: BaseFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,15 +35,11 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     abstract fun getLayoutId(): Int
 
-    open fun injecting(){
+    open fun injecting() {
 
     }
 
-    override fun showLoading() {
-
-    }
-
-    override fun hideLoading() {
-
+    override fun onBackPressed() {
+        currentFragment?.onBackPressed()
     }
 }

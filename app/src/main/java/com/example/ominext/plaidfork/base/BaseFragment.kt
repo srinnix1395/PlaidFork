@@ -17,9 +17,16 @@ abstract class BaseFragment : Fragment(), BaseView {
 
     abstract fun getLayoutId(): Int
 
+    open fun getData(arguments: Bundle) {
+
+    }
+
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         injecting()
+        arguments?.let {
+            getData(arguments)
+        }
         initChildView()
     }
 
@@ -27,15 +34,12 @@ abstract class BaseFragment : Fragment(), BaseView {
 
     abstract fun initChildView()
 
-    override fun showLoading() {
-
+    fun onBackPressed(){
+        val count = fragmentManager.backStackEntryCount
+        if (count > 1) {
+            fragmentManager.popBackStack()
+        } else {
+            activity.finish()
+        }
     }
-
-    override fun hideLoading() {
-
-    }
-}
-
-fun Fragment.activity(): BaseActivity {
-    return this.activity as BaseActivity
 }
