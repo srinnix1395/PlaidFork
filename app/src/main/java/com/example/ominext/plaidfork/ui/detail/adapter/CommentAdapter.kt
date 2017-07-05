@@ -1,11 +1,11 @@
-package com.example.ominext.plaidfork.ui.detail
+package com.example.ominext.plaidfork.ui.detail.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.ominext.plaidfork.R
 import com.example.ominext.plaidfork.data.model.Comment
-import com.example.ominext.plaidfork.ui.home.LoadingViewHolder
+import com.example.ominext.plaidfork.ui.home.adapter.LoadingViewHolder
 
 /**
  * Created by Admin on 15-Jun-17.

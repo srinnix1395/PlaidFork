@@ -1,15 +1,11 @@
-package com.example.ominext.plaidfork.ui.detail
+package com.example.ominext.plaidfork.ui.detail.view
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
-import android.support.v7.graphics.Palette
+import android.support.annotation.RequiresApi
 import android.support.v7.widget.LinearLayoutManager
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable
-import com.bumptech.glide.load.resource.drawable.GlideDrawable
-import com.bumptech.glide.load.resource.gif.GifDrawable
-import com.bumptech.glide.request.animation.GlideAnimation
 import com.example.ominext.plaidfork.R
 import com.example.ominext.plaidfork.base.BaseFragment
 import com.example.ominext.plaidfork.data.model.Comment
@@ -18,6 +14,8 @@ import com.example.ominext.plaidfork.extension.load
 import com.example.ominext.plaidfork.extension.loadAnimated
 import com.example.ominext.plaidfork.extension.parentActivity
 import com.example.ominext.plaidfork.extension.setTextWithFormatNumber
+import com.example.ominext.plaidfork.ui.detail.adapter.CommentAdapter
+import com.example.ominext.plaidfork.ui.detail.presenter.DetailPresenter
 import com.example.ominext.plaidfork.util.DateUtils
 import com.example.ominext.plaidfork.util.LinkUtils
 import com.example.ominext.plaidfork.widget.EndlessScrollListener
@@ -28,8 +26,8 @@ class DetailFragment : BaseFragment(), DetailView {
 
     companion object {
         const val SHOT_DATA = "shot_data"
+        const val TRANSITION_NAME: String = "transition_name"
     }
-
 
     @Inject
     lateinit var detailPresenter: DetailPresenter
@@ -46,9 +44,11 @@ class DetailFragment : BaseFragment(), DetailView {
         parentActivity.activityComponent.inject(this)
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun getData(arguments: Bundle) {
         super.getData(arguments)
         shot = arguments.getParcelable(SHOT_DATA)
+        ivCover.transitionName = arguments.getString(TRANSITION_NAME)
     }
 
     override fun initChildView() {
@@ -93,34 +93,33 @@ class DetailFragment : BaseFragment(), DetailView {
 
     override fun showShot() {
         if (shot?.animate ?: false) {
-            ivCover.loadAnimated(shot?.images?.hidpi, asGif = true) { resource: GlideDrawable,
-                                                                      _: GlideAnimation<in GlideDrawable>? ->
-                var gifBitmap: Bitmap? = null
-                if (resource is GifDrawable) {
-                    gifBitmap = resource.firstFrame
-                } else if (resource is GlideBitmapDrawable) {
-                    gifBitmap = resource.bitmap
-                }
-
-                paletteView.setSwatches(Palette.from(gifBitmap).maximumColorCount(8).generate().swatches)
-            }
+            ivCover.loadAnimated(shot?.images?.hidpi,
+                    asGif = true,
+                    generatePalette = true,
+                    paletteListener = {
+                        paletteView.setSwatches(it.swatches)
+                    })
         } else {
-            ivCover.load(shot?.images?.hidpi) {
-                paletteView.setSwatches(Palette.from(it).maximumColorCount(8).generate().swatches)
-            }
+            ivCover.load(shot?.images?.hidpi,
+                    generatePalette = true,
+                    paletteListener = {
+                        paletteView.setSwatches(it.swatches)
+                    })
         }
 
         tvTitle.text = shot?.title ?: ""
 
         tvAuthorName.text = shot?.user?.name ?: ""
-        ivAuthorImage.load(shot?.user?.avatar, asBitmap = true, rounded = true)
+        ivAuthorImage.load(shot?.user?.avatar, rounded = true)
         tvDate.text = DateUtils.parse(shot?.createdTime) ?: ""
 
         tvLikeCount.setTextWithFormatNumber(R.plurals.like_number, shot?.likeCount)
         tvViewCount.setTextWithFormatNumber(R.plurals.view_number, shot?.viewCount)
         tvResponseCount.setTextWithFormatNumber(R.plurals.comment_number, shot?.commentCount)
 
-        LinkUtils.setTextWithLinks(tvDescription, shot?.description!!)
+        shot?.description?.let {
+            LinkUtils.setTextWithLinks(tvDescription, shot?.description!!)
+        }
 
         detailPresenter.loadComments(shot?.id!!, isFirst = true)
     }

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.ominext.plaidfork.extension.parentActivity
 
 /**
  * Created by Ominext on 6/13/2017.
@@ -41,5 +42,10 @@ abstract class BaseFragment : Fragment(), BaseView {
         } else {
             activity.finish()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        parentActivity.currentFragment = this
     }
 }

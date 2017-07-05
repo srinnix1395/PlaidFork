@@ -27,17 +27,16 @@ class ColorPaletteView : LinearLayout {
 
     fun setSwatches(swatches: List<Palette.Swatch>?) {
         TransitionManager.beginDelayedTransition(this)
-        if (swatches == null)
-            return
+        val distinctSwatches = swatches?.distinct()?.take(8) ?: return
 
-        if (swatches!!.size < 2) {
+        if (distinctSwatches.size < 2) {
             visibility = View.INVISIBLE
             return
         }
 
         val layoutParam = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1.0f)
 
-        for (swatch in swatches) {
+        for (swatch in distinctSwatches) {
             val color = swatch.rgb
             val view = View(context)
             view.layoutParams = layoutParam

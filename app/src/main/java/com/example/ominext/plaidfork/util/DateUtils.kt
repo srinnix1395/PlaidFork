@@ -18,7 +18,7 @@ object DateUtils {
     fun parse(date: Date?): String? {
         if (date == null) return null
         val elapsedMillis = Date().time - date.time
-        var quantity: Int
+        val quantity: Int
         if ((elapsedMillis / TimeUnit.DAYS.toMillis(1)).toInt() > 0) {
             return DateFormat.getDateInstance().format(date)
         } else if ((elapsedMillis / TimeUnit.HOURS.toMillis(1)).toInt() > 0) {

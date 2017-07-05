@@ -1,15 +1,18 @@
 package com.example.ominext.plaidfork.extension
 
+import android.annotation.TargetApi
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
+import android.support.v7.graphics.Palette
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.animation.GlideAnimation
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget
+import com.example.ominext.plaidfork.widget.ShotTarget
 
 
 /**
@@ -26,7 +29,9 @@ fun ImageView.load(resource: Any?,
                    thumbnail: Float = 0f,
                    fitCenter: Boolean = false,
                    centerCrop: Boolean = false,
-                   diskCacheStrategy: DiskCacheStrategy? = null, callback: ((Bitmap) -> Unit)? = null) {
+                   diskCacheStrategy: DiskCacheStrategy? = null,
+                   generatePalette: Boolean = false,
+                   callback: ((Bitmap) -> Unit)? = null, paletteListener: ((palette: Palette) -> Unit)? = null) {
 
     val request = Glide.with(context).load(resource)
 
@@ -74,9 +79,10 @@ fun ImageView.load(resource: Any?,
         }
     }
 
-    request.into(object : GlideDrawableImageViewTarget(this) {
-        override fun onResourceReady(resource: GlideDrawable, animation: GlideAnimation<in GlideDrawable>?) {
-            super.onResourceReady(resource, animation)
+    request.into(object : ShotTarget(this, generatePalette) {
+        override fun onPreProcess(resource: GlideDrawable, animation: GlideAnimation<in GlideDrawable>?) {
+            super.onPreProcess(resource, animation)
+
             val bitmap = (resource as GlideBitmapDrawable).bitmap
             if (rounded) {
                 val roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
@@ -86,6 +92,11 @@ fun ImageView.load(resource: Any?,
                 this@load.setImageBitmap(bitmap)
             }
             callback?.invoke(bitmap)
+        }
+
+        override fun onGeneratedPalette(palette: Palette) {
+            super.onGeneratedPalette(palette)
+            paletteListener?.invoke(palette)
         }
     })
 }
@@ -99,9 +110,10 @@ fun ImageView.loadAnimated(resource: Any?,
                            thumbnail: Float = 0f,
                            fitCenter: Boolean = false,
                            centerCrop: Boolean = false,
+                           autoPlay: Boolean = true,
+                           generatePalette: Boolean = false,
                            diskCacheStrategy: DiskCacheStrategy? = null,
-                           callback: ((resource: GlideDrawable, animation: GlideAnimation<in
-                           GlideDrawable>?) -> Unit)? = null) {
+                           callback: ((resource: GlideDrawable, animation: GlideAnimation<in GlideDrawable>?) -> Unit)? = null, paletteListener: ((palette: Palette) -> Unit)? = null) {
 
     val request = Glide.with(context).load(resource)
 
@@ -149,13 +161,24 @@ fun ImageView.loadAnimated(resource: Any?,
         }
     }
 
-    request.into(object : GlideDrawableImageViewTarget(this) {
-        override fun onResourceReady(resource: GlideDrawable, animation: GlideAnimation<in GlideDrawable>?) {
-            super.onResourceReady(resource, animation)
-            if (asBitmap) {
+
+    request.into(object : ShotTarget(this, generatePalette) {
+        override fun onPreProcess(resource: GlideDrawable, animation: GlideAnimation<in GlideDrawable>?) {
+            super.onPreProcess(resource, animation)
+            if (!autoPlay) {
                 resource.stop()
             }
+        }
+
+        override fun onPostProcess(resource: GlideDrawable, animation: GlideAnimation<in GlideDrawable>?) {
+            super.onPostProcess(resource, animation)
             callback?.invoke(resource, animation)
+        }
+
+        @TargetApi(Build.VERSION_CODES.M)
+        override fun onGeneratedPalette(palette: Palette) {
+            super.onGeneratedPalette(palette)
+            paletteListener?.invoke(palette)
         }
     })
 }

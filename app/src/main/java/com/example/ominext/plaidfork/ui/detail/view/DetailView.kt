@@ -1,4 +1,4 @@
-package com.example.ominext.plaidfork.ui.detail
+package com.example.ominext.plaidfork.ui.detail.view
 
 import com.example.ominext.plaidfork.base.BaseView
 import com.example.ominext.plaidfork.data.model.Comment

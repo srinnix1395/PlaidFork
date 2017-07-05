@@ -4,8 +4,8 @@ import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import com.example.ominext.plaidfork.base.BasePresenter
 import com.example.ominext.plaidfork.di.ActivityContext
-import com.example.ominext.plaidfork.ui.home.HomePresenter
-import com.example.ominext.plaidfork.ui.home.HomeView
+import com.example.ominext.plaidfork.ui.home.presenter.HomePresenter
+import com.example.ominext.plaidfork.ui.home.view.HomeView
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable

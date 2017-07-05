@@ -18,6 +18,7 @@ data class Shot(@SerializedName("id") val id: Int,
                 @SerializedName("views_count") val viewCount: Int,
                 @SerializedName("comments_count") val commentCount: Int,
                 @SerializedName("likes_count") val likeCount: Int) : Parcelable {
+
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<Shot> = object : Parcelable.Creator<Shot> {
             override fun createFromParcel(source: Parcel): Shot = Shot(source)
@@ -26,16 +27,16 @@ data class Shot(@SerializedName("id") val id: Int,
     }
 
     constructor(source: Parcel) : this(
-    source.readInt(),
-    source.readParcelable<Images>(Images::class.java.classLoader),
-    source.readString(),
-    source.readString(),
-    source.readSerializable() as Date?,
-    source.readParcelable<User>(User::class.java.classLoader),
-    1 == source.readInt(),
-    source.readInt(),
-    source.readInt(),
-    source.readInt()
+            source.readInt(),
+            source.readParcelable<Images>(Images::class.java.classLoader),
+            source.readString(),
+            source.readString(),
+            source.readSerializable() as Date?,
+            source.readParcelable<User>(User::class.java.classLoader),
+            1 == source.readInt(),
+            source.readInt(),
+            source.readInt(),
+            source.readInt()
     )
 
     override fun describeContents() = 0

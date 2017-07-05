@@ -3,7 +3,7 @@ package com.example.ominext.plaidfork
 import android.content.Context
 import com.example.ominext.plaidfork.base.BaseActivity
 import com.example.ominext.plaidfork.extension.addFragment
-import com.example.ominext.plaidfork.ui.home.HomeFragment
+import com.example.ominext.plaidfork.ui.home.view.HomeFragment
 
 
 /**

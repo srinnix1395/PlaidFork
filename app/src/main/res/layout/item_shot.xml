@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:background="?selectableItemBackground"
+             android:background="#fff"
              android:clickable="true"
-             android:orientation="vertical">
+             android:stateListAnimator="@animator/raise"
+             tools:targetApi="lollipop">
 
   <com.example.ominext.plaidfork.widget.AspectRatioImageView
       android:id="@+id/imvContent"

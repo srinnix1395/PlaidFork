@@ -1,4 +1,4 @@
-package com.example.ominext.plaidfork.ui.home
+package com.example.ominext.plaidfork.ui.home.adapter
 
 import android.graphics.Color
 import android.graphics.PorterDuff

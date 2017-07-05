@@ -10,4 +10,6 @@
   <color name="gray100">#F5F5F5</color>
   <color name="gray300">#E0E0E0</color>
   <color name="gray600">#757575</color>
+
+  <color name="grayRipple">#40808080</color>
 </resources>

@@ -1,9 +1,10 @@
-package com.example.ominext.plaidfork.ui.home
+package com.example.ominext.plaidfork.ui.home.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.example.ominext.plaidfork.R
 import com.example.ominext.plaidfork.data.model.Shot
 
@@ -14,7 +15,7 @@ import com.example.ominext.plaidfork.data.model.Shot
 const val TYPE_ITEM: Int = 1
 const val TYPE_LOADING: Int = 2
 
-class ShotAdapter(var list: ArrayList<Any>, val itemClick: (position: Int) -> Unit)
+class ShotAdapter(var list: ArrayList<Any>, val itemClick: (imageView: ImageView, position: Int) -> Unit)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): RecyclerView.ViewHolder {

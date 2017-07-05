@@ -20,7 +20,7 @@ abstract class EndlessScrollListener(val layoutManager: RecyclerView.LayoutManag
         if (dy < 0) return
 
         val totalItemCount = layoutManager.itemCount
-        var lastVisibleItemCount = when (layoutManager) {
+        val lastVisibleItemCount = when (layoutManager) {
             is GridLayoutManager -> layoutManager.findLastVisibleItemPosition()
             is LinearLayoutManager -> layoutManager.findLastVisibleItemPosition()
             else -> return

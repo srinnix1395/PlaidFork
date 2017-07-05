@@ -1,17 +1,19 @@
-package com.example.ominext.plaidfork.ui.home
+package com.example.ominext.plaidfork.ui.home.view
 
-import android.graphics.Color
 import android.support.transition.TransitionManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import com.example.ominext.plaidfork.R
 import com.example.ominext.plaidfork.base.BaseFragment
 import com.example.ominext.plaidfork.data.LOADING_TYPE
 import com.example.ominext.plaidfork.data.model.Shot
 import com.example.ominext.plaidfork.extension.parentActivity
+import com.example.ominext.plaidfork.ui.home.adapter.ShotAdapter
+import com.example.ominext.plaidfork.ui.home.presenter.HomePresenter
 import com.example.ominext.plaidfork.widget.EndlessScrollListener
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -32,13 +34,10 @@ class HomeFragment : BaseFragment(), HomeView, SwipeRefreshLayout.OnRefreshListe
     }
 
     override fun initChildView() {
-        toolbar.title = "PLAID FORK"
-        toolbar.setTitleTextColor(Color.WHITE)
-
         list = ArrayList()
 
-        adapter = ShotAdapter(list, fun(position: Int) {
-            presenter.onClickShot(parentActivity, list, position)
+        adapter = ShotAdapter(list, fun(imageView: ImageView, position: Int) {
+            presenter.onClickShot(this,parentActivity, list[position] as Shot, position, imageView)
         })
 
         val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
@@ -59,6 +58,7 @@ class HomeFragment : BaseFragment(), HomeView, SwipeRefreshLayout.OnRefreshListe
             setProgressBackgroundColorSchemeColor(ContextCompat.getColor(context, R.color.colorAccent))
             setColorSchemeColors(ContextCompat.getColor(context, android.R.color.white))
             setOnRefreshListener(this@HomeFragment)
+            isRefreshing = true
         }
         presenter.getShots()
     }

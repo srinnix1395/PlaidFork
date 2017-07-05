@@ -1,8 +1,9 @@
-package com.example.ominext.plaidfork.ui.detail
+package com.example.ominext.plaidfork.ui.detail.presenter
 
 import android.util.Log
 import com.example.ominext.plaidfork.base.BasePresenter
 import com.example.ominext.plaidfork.data.DataManager
+import com.example.ominext.plaidfork.ui.detail.view.DetailView
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
